@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>8E Degrees</h1>
+            <input type="text" id="searchInput" placeholder="Search Products..." onkeyup="filterMenu()"> <i class="fas fa-search"></i>
+        </header>
+        <main class="menu-section">
+            <section class="menu">
+                <h2>Menu</h2>
+                <nav class="menu-categories">
+                    <a href="index.html">Starters</a>
+                    <a href="breakfast.html">Breakfast</a>
+                    <a href="lunch.html">Lunch</a>
+                    <a href="desserts.html">Desserts</a>
+                    <a href="drinks.html">Drinks</a>
+                </nav>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <img src="Assets/pancake.png" alt="Banana Walnut Pancake">
+                        <p>Banana Walnut Pancake</p>
+                        <p>₱ 230.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/bfast_egg.png" alt="Tomato & Egg Skillet">
+                        <p>Tomato & Egg Skillet</p>
+                        <p>₱ 210.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/orange_juice.png" alt="Artisan Orange Press">
+                        <p>Artisan Orange Press</p>
+                        <p>₱ 160.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/chocolate.png" alt="Strawberry Kissed Chocolate">
+                        <p>Strawberry Kissed Chocolate</p>
+                        <p>₱ 220.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/buffalo.png" alt="Buffa-Licious Chicken">
+                        <p>Buffa-Licious Chicken</p>
+                        <p>₱ 210.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/beef_steak.png" alt="Grilled Beef Steak">
+                        <p>Grilled Beef Steak</p>
+                        <p>₱ 250.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/spaghetti.jpg" alt="Grilled Beef Steak">
+                        <p>Spaghetti al Sogno</p>
+                        <p>₱ 270.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/tonkatsu.jpg" alt="Grilled Beef Steak">
+                        <p>Crispy Japanese Fried Pork Cutlet</p>
+                        <p>₱ 150.00</p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/sundae.jpg" alt="Grilled Beef Steak">
+                        <p>Brownie Sundae</p>
+                        <p>₱ 250.00</p>
+                    </div>
+                </div>
+            </section>
+            <aside class="order-summary">
+                <h1>ORDER</h1>
+                <div class="order-item">
+                    <span>2 Artisan Orange Press</span>
+                    <span>₱ 160.00 <br>&nbsp;x 2</span>
+                </div><br>
+                <div class="order-item">
+                    <span>1 Banana Walnut Pancake</span>
+                    <span>₱ 160.00</span>
+                </div><br>
+                <div class="order-item">
+                    <span>2 Grilled Beef Steak</span>
+                    <span>₱ 250.00</span>
+                </div><br><br><br>
+                <div class="total">
+                    <span>Subtotal:</span>
+                    <span>₱ 1150</span>
+                </div>
+                <div class="total">
+                    <span>Payable Amount:</span>
+                    <span>₱ 1150</span>
+                </div>
+                <button class="proceed-btn">PROCEED</button>
+            </aside>
+        </main>
+    </div>
+    <script>
+        function filterMenu() {
+            var input, filter, menuItems, item, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            menuItems = document.querySelector('.menu-items');
+            item = menuItems.getElementsByClassName('menu-item');
+
+            for (i = 0; i < item.length; i++) {
+                txtValue = item[i].textContent || item[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    item[i].style.display = '';
+                } else {
+                    item[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+input[type="text"] {
+    border-radius: 10px;
+}
+
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    display: flex;  
+    align-items: center; 
+    gap: 10px;  
+}
+
+header h1 {
+    margin: 0;  
+    font-size: 35px;  
+    font-family: 'Brush Script MT', cursive;
+}
+
+header input[type="text"] {
+    width: 80%;
+    padding: 8px;  
+    font-size: 15px;  
+    width: 45%;  
+    margin-left: 45px;
+}
+
+.menu-section {
+    display: flex;
+    margin-top: 20px;
+}
+
+.menu {
+    flex: 3;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.menu h2 {
+    margin-bottom: 20px;
+}
+
+.menu-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu-item {
+    width: 30%;
+    margin: 10px;
+    padding: 15px;
+    background-color:#9c020a;
+    color: #fff;
+    text-align: center;
+    border-radius: 20px;
+
+}
+
+.menu-item img {
+    width: 100%;
+    height: auto;
+}
+
+.order-summary {
+    flex: 1;
+    padding: 20px;
+    background-color: #877575;
+}
+
+.order-summary h1 {
+    margin-bottom: 40px;
+    color:#fff;
+    margin-left: 100px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color:#fff;
+}
+
+.quantity {
+    margin-top: 20px;
+}
+
+.quantity label {
+    margin-right: 10px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.proceed-btn {
+    background-color:#9c020a;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 40px;
+    border-radius: 10px;
+    margin-left: 90px;
+}
+.menu-categories {
+    background-color: black;
+    padding: 10px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.menu-categories a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.menu-categories a:hover {
+    background-color: #444;
+}
