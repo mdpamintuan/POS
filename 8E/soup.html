@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>8E Degrees</h1>
+            <input type="text" id="searchInput" placeholder="Search Products..." onkeyup="filterMenu()"> <i class="fas fa-search"></i>
+        </header>
+        <main class="menu-section">
+            <section class="menu">
+                <h2>Menu</h2>
+                <nav class="menu-categories">
+                    <a href="index.html">Specialties</a>
+                    <a href="buffalo.html">Buffalo Wings</a>
+                    <a href="salad.html">Salads</a>
+                    <a href="soup.html">Soups</a>
+                    <a href="drinks.html">Drinks</a>
+                    <a href="shortOrder.html">Short Orders</a>
+                </nav>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <img src="Assets/bulalo.PNG" data-price="350" onclick="addToOrder('Bulalo', 350)">
+                        <p>Bulalo</p><br>
+                        <p><b>₱ 350.00</b></p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/crab_corn.jpg" data-price="180" onclick="addToOrder('Crab and Corn', 180)">
+                        <p>Crab and Corn</p><br>
+                        <p><b>₱ 180.00</b></p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/mushroom.PNG" data-price="180" onclick="addToOrder('Mushroom Soup', 180)">
+                        <p>Mushroom Soup</p><br>
+                        <p><b>₱ 180.00</b></p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/sinigang_baboy.PNG" data-price="220" onclick="addToOrder('Sinigang na Baboy', 300)">
+                        <p>Sinigang na Baboy</p><br>
+                        <p><b>₱ 300.00</b></p>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Assets/sinigang_hipon.PNG" data-price="300" onclick="addToOrder('Sinigang na Baboy', 320)">
+                        <p>Sinigang na Hipon</p><br>
+                        <p><b>₱ 320.00</b></p>
+                    </div>
+                  
+                </div>
+            </section>
+            <aside class="order-summary">
+                <h1>ORDER</h1>
+                <div id="order-list"></div>
+                <div class="total">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₱ 0.00</span>
+                </div>
+                <div class="total">
+                    <span>VAT (12%):</span>
+                    <span id="vat">₱ 0.00</span>
+                </div>                
+                <div class="total" style="font-size: 20px;">
+                    <span>Payable Amount:</span>
+                    <span id="payable">₱ 0.00</span>
+                </div>
+                <button class="proceed-btn">PROCEED</button>
+            </aside>         
+        </main>
+    </div>
+    
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Order Summary</h2><br>
+            <div id="modal-order-list"></div>
+            <div class="total" style="color: rgb(0, 0, 0);">
+                <span>Subtotal: </span><Br>
+                <span id="modal-subtotal" style="color: rgb(0, 0, 0);">₱ 0.00</span>
+            </div>
+            <div class="total" style="color: rgb(0, 0, 0);">
+                <span>VAT (12%):</span><br>
+                <span id="modal-vat" style="color: rgb(0, 0, 0);">₱ 0.00</span>
+            </div>            
+            <div class="total"style="color: black; font-size: 20px;">
+                <span>Payable Amount:</span><Br>
+                <span id="modal-payable" style="color: rgb(0, 0, 0); font-size: 20px;">₱ 0.00</span>
+            </div><br>
+            <button class="confirm-btn">Confirm Order</button>
+        </div>
+    </div>
+
+<div id="processingModal" class="modal">
+    <div class="modal-content">
+        <h2>Order Processing..</h2>
+    </div>
+</div>
+
+    <script>
+        let order = JSON.parse(localStorage.getItem('order')) || [];
+    
+        function addToOrder(itemName, price) {
+            let existingItem = order.find(item => item.name === itemName);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                order.push({ name: itemName, price: price, quantity: 1 });
+            }
+            updateOrderSummary();
+            saveOrder();
+        }
+    
+
+        function updateOrderSummary() {
+    let orderList = document.getElementById('order-list');
+    let subtotal = 0;
+    orderList.innerHTML = '';  
+
+    order.forEach((item, index) => {
+        subtotal += item.price * item.quantity;
+        let orderItem = document.createElement('div');
+        orderItem.classList.add('order-item');
+        orderItem.innerHTML = `
+            <span>${item.name}</span>
+            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+            <span>₱ ${item.price} x ${item.quantity}</span>
+            <button onclick="removeItem(${index})">Delete</button>
+        `;
+        orderList.appendChild(orderItem);
+    });
+
+    let vat = subtotal * 0.12;
+    let payable = subtotal + vat;
+
+    document.getElementById('subtotal').innerText = `₱ ${subtotal.toFixed(2)}`;
+    document.getElementById('vat').innerText = `₱ ${vat.toFixed(2)}`;
+    document.getElementById('payable').innerText = `₱ ${payable.toFixed(2)}`;
+}
+
+    
+        function updateQuantity(index, quantity) {
+            if (quantity < 1) return;  
+            order[index].quantity = parseInt(quantity);
+            updateOrderSummary();
+            saveOrder();
+        }
+    
+        function removeItem(index) {
+            order.splice(index, 1);
+            updateOrderSummary();
+            saveOrder();
+        }
+    
+        function saveOrder() {
+            localStorage.setItem('order', JSON.stringify(order));
+        }
+    
+       
+        function filterMenu() {
+            var input, filter, menuItems, item, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            menuItems = document.querySelector('.menu-items');
+            item = menuItems.getElementsByClassName('menu-item');
+    
+            for (i = 0; i < item.length; i++) {
+                txtValue = item[i].textContent || item[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    item[i].style.display = '';
+                } else {
+                    item[i].style.display = 'none';
+                }
+            }
+        }
+        function showModal() {
+    let modal = document.getElementById("orderModal");
+    let modalOrderList = document.getElementById("modal-order-list");
+    let modalSubtotal = document.getElementById("modal-subtotal");
+    let modalVat = document.getElementById("modal-vat");
+    let modalPayable = document.getElementById("modal-payable");
+
+    modalOrderList.innerHTML = '';
+    let subtotal = 0;
+
+    order.forEach(item => {
+        subtotal += item.price * item.quantity;
+        let modalItem = document.createElement('div');
+        modalItem.classList.add('modal-item');
+        modalItem.innerHTML = `<span>${item.name}</span>`;
+        modalOrderList.appendChild(modalItem);
+    });
+
+    let vat = subtotal * 0.12; 
+    let payable = subtotal + vat;
+
+    modalSubtotal.innerText = `₱ ${subtotal.toFixed(2)}`;
+    modalVat.innerText = `₱ ${vat.toFixed(2)}`;
+    modalPayable.innerText = `₱ ${payable.toFixed(2)}`;
+
+    modal.style.display = "block";
+}
+
+
+        function closeModal() {
+            let modal = document.getElementById("orderModal");
+            modal.style.display = "none";
+        }
+
+        window.onload = function() {
+            updateOrderSummary();
+        }
+
+        document.querySelector('.proceed-btn').addEventListener('click', showModal);
+
+        window.onclick = function(event) {
+            let modal = document.getElementById("orderModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+document.querySelector('.confirm-btn').addEventListener('click', function() {
+    let modal = document.getElementById("orderModal");
+    let processingModal = document.getElementById("processingModal");
+
+    modal.style.display = "none";
+
+    processingModal.style.display = "block";
+
+    setTimeout(function() {
+        processingModal.style.display = "none";
+        alert("Your order has been confirmed and is now being processed!");
+
+        localStorage.removeItem('order'); 
+        updateOrderSummary(); 
+    }, 2000); 
+});
+
+    
+        window.onload = function() {
+            updateOrderSummary();
+        }
+    </script>
+    
+</body>
+</html>
